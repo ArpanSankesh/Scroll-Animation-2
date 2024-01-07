@@ -1,17 +1,38 @@
-const sections = document.querySelectorAll("section");
+const flightPath = {
+  curviness: 1.25,
+  autoRotate: true,
+  values: [
 
+    { x: 100, y: -20 },
+    { x: 300, y: 10 },
+    { x: 500, y: 100 },
+    { x: 750, y: -100 },
+    { x: 550, y: -200 },
+    { x: 350, y: -100 },
+    { x: 600, y: 100 },
+    { x: 800, y: 0 },
+    { x: innerWidth + 120, y: -250 },
+  ],
+};
 
-window.addEventListener('scroll', function() {
-  sections.forEach(sec => {
-    let top = window.scrollY;
-    let offset = sec.offsetTop - 150;
-    let height = sec.offsetHeight;
+const tween = new TimelineLite();
 
-    if (top >= offset && top < offset + height) {
-      sec.classList.add("scroll");
-    } else {
-      sec.classList.remove("scroll");
-    }
-  });
-});
+tween.add(
+  TweenLite.to(".plane", 2, {
+    bezier: flightPath,
+    ease: Power1.easeInOut
+    
+  })
+);
 
+const controller = new ScrollMagic.Controller();
+
+const scene = new ScrollMagic.Scene({
+  triggerElement: '.animation',
+  duration:2000,
+  triggerHook:0
+})
+.setTween(tween)
+// .addIndicators()
+.setPin('.animation')
+.addTo(controller);
